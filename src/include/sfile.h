@@ -1,6 +1,8 @@
 /*
- * $File: common.h
- * $Date: Sun Jun 12 23:18:16 2011 +0800
+ * $File: sfile.h
+ * $Date: Sun Jun 12 23:26:04 2011 +0800
+ *
+ * sound file class
  */
 /*
 	This file is part of xabell
@@ -21,32 +23,26 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _HEADER_COMMON_
-#define _HEADER_COMMON_
+#ifndef _HEADER_SFILE_
+#define _HEADER_SFILE_
 
-#define PROGRAM_NAME	"xabell"
+#include "sdevice.h"
 
-class Error
+class SoundFile
 {
-	char *m_msg;
-	void operator = (const Error &)
-	{}
-public:
-	Error(const Error &);
-	Error(const char *fmt, ...) __attribute__((format(printf, 2, 3)));
-	const char *get_msg() const;
-	~Error();
+		SoundDevice::Sample_t *m_buf;
+		int m_nframe, m_samplerate, m_nchannel;
+		double m_sp_time, m_prev_play_time;
+
+		static void* play_thread(const SoundFile *file);
+	public:
+		SoundFile(const char *path, double suppress_time);
+		// suppress_time: interval (seconds) during which subsequent
+		// play requests are ignored
+		~SoundFile();
+
+		// play that file in a new thread
+		void play();
 };
 
-
-#ifdef _DEBUG_BUILD_
-extern void __debug_output(const char *file, int line, const char *func,
-		const char *fmt, ...) __attribute__((format(printf, 4, 5)));
-#define debug_output(fmt, ...) \
-	__debug_output(__FILE__, __LINE__, __PRETTY_FUNCTION__, fmt, ## __VA_ARGS__)
-#else
-#define debug_output(...)
 #endif
-
-#endif // _HEADER_COMMON_
-

@@ -1,15 +1,16 @@
 # $File: Makefile
-# $Date: Sun Jun 12 18:56:20 2011 +0800
+# $Date: Sun Jun 12 22:56:54 2011 +0800
 
 OBJ_DIR = obj
 TARGET = xabell
 
-PKGCONFIG_LIBS = alsa x11
-INCLUDE_DIR = -I src/include -I src
-DEFINES = 
-CXXFLAGS = -Wall -Wextra  \
+PKGCONFIG_LIBS = alsa x11 sndfile
+INCLUDE_DIR = -Isrc/include -Isrc
+DEFINES = -D_DEBUG_BUILD_
+CXXFLAGS = -Wall -Wextra  -pthread \
 		   $(shell pkg-config --cflags $(PKGCONFIG_LIBS)) $(INCLUDE_DIR) $(DEFINES) -O2
-LDFLAGS = $(shell pkg-config --libs $(PKGCONFIG_LIBS))
+LDFLAGS = -pthread \
+		  $(shell pkg-config --libs $(PKGCONFIG_LIBS))
 
 CXX = g++
 CXXSOURCES = $(shell find src -name "*.cpp")
@@ -41,10 +42,10 @@ clean:
 	rm -rf $(OBJ_DIR) $(TARGET)
 
 run: $(TARGET)
-	./$(TARGET)
+	./$(TARGET) bell.wav 100
 
 hg:
 	hg addremove
 	hg commit -u jiakai
-#	hg push
+	hg push
 

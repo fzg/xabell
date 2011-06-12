@@ -1,6 +1,9 @@
 /*
- * $File: common.h
- * $Date: Sun Jun 12 23:18:16 2011 +0800
+ * $File: sdevice.h
+ * $Date: Sun Jun 12 20:18:17 2011 +0800
+ *
+ * sound device class
+ *
  */
 /*
 	This file is part of xabell
@@ -21,32 +24,21 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _HEADER_COMMON_
-#define _HEADER_COMMON_
+#ifndef _HEADER_SDEVICE_
+#define _HEADER_SDEVICE_
 
-#define PROGRAM_NAME	"xabell"
-
-class Error
+class SoundDevice
 {
-	char *m_msg;
-	void operator = (const Error &)
-	{}
-public:
-	Error(const Error &);
-	Error(const char *fmt, ...) __attribute__((format(printf, 2, 3)));
-	const char *get_msg() const;
-	~Error();
+		void *m_p_handle;
+		void set_params();
+	public:
+		typedef short int  Sample_t;
+		static const Sample_t SAMPLE_VAL_MAX;
+		SoundDevice(unsigned int rate, int nchannel);
+		~SoundDevice();
+
+		void write(const Sample_t *buf, int nframe);
 };
 
-
-#ifdef _DEBUG_BUILD_
-extern void __debug_output(const char *file, int line, const char *func,
-		const char *fmt, ...) __attribute__((format(printf, 4, 5)));
-#define debug_output(fmt, ...) \
-	__debug_output(__FILE__, __LINE__, __PRETTY_FUNCTION__, fmt, ## __VA_ARGS__)
-#else
-#define debug_output(...)
 #endif
-
-#endif // _HEADER_COMMON_
 
