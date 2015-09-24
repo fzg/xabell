@@ -12,4 +12,4 @@ xabell is a tiny program that produces audio bells via ALSA when the bell is run
 
 ## use
 
- add to your .xinitrc something like 'xabell bell_file 0'
+ add to your .xinitrc something like 'xabell bell_file 0&'
