@@ -57,7 +57,7 @@ SoundDevice::SoundDevice(unsigned int rate, int nchannel) :
 					nchannel,
 					rate,
 					1,	// allow resampling
-					0	// required overall latency in us 
+					64	// required overall latency in us 
 					)) < 0)
 		throw Error("failed to set playback parameters: %s",
 				snd_strerror(err));
