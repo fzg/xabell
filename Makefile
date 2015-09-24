@@ -44,6 +44,9 @@ clean:
 run: $(TARGET)
 	./$(TARGET) bell.wav 100
 
+install:
+	cp xabell /usr/local/bin
+
 hg:
 	hg addremove
 	hg commit -u jiakai
